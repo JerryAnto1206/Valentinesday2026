@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Aruna ❤️</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="giftShortcut" onclick="goToGifts()">🎁</div>
+<audio id="bgAudio"></audio>
+
+<!-- ❤️ PAGE 1 -->
+<div class="page active">
+    <div class="content">
+        <h1>Hi Aruna 💖</h1>
+        <h2>Happy Valentine’s Day ❤️</h2>
+        <button onclick="nextFromPage1()">Next →</button>
+    </div>
+</div>
+
+<!-- ❤️ PAGE 2 -->
+<div class="page">
+    <div class="content">
+        <h2>Hey love, this little corner of the internet is just for you ❤️</h2>
+        <button onclick="nextFromPage2()">Next →</button>
+    </div>
+</div>
+
+<!-- 📸 PAGE 3 -->
+<div class="page">
+    <div class="content">
+        <h2>Our Memories 📸</h2>
+        <div class="gallery" id="gallery"></div>
+        <button onclick="stopBgAudio(); nextPage()">Next →</button>
+    </div>
+</div>
+
+<!-- 💕 PAGE 4 -->
+<div class="page">
+    <div class="content">
+        <h2>Reasons I Love You 💕</h2>
+        <div class="card"
+             onclick="playBgAudio('bgaudios/reasoniloveyou.mp3'); showReason()">
+            Click me 💖
+        </div>
+        <p id="reasonText"></p>
+
+        <!-- ✅ UPDATED HERE -->
+        <button onclick="nextFromReasons()">Next →</button>
+    </div>
+</div>
+
+<!-- 🔐 SECRET PAGE -->
+<div class="page">
+    <div class="content">
+        <h2>Something Hidden Just For You 🔐</h2>
+        <p>Double tap the box 💛</p>
+
+        <img src="secretbox.gif"
+             id="secretBox"
+             width="200"
+             style="cursor:pointer; border-radius:20px;">
+
+        <div id="secretArea" style="margin-top:20px;"></div>
+
+        <!-- ✅ UPDATED HERE -->
+        <button onclick="nextFromSecret()">Next →</button>
+    </div>
+</div>
+
+<!-- 💘 PAGE 6 -->
+<div class="page">
+    <div class="content">
+        <h2>Will you be my Valentine? 💘</h2>
+        <div id="valentineArea">
+            <button onclick="playBgAudio('bgaudios/yes.mp3'); yesClicked()">YES 💖</button>
+            <button id="noBtn"
+                onmouseenter="moveNo()"
+                onclick="moveNo()">NO 😏</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🎉 PAGE 7 -->
+<div class="page">
+    <div class="content">
+        <h1>Yayyy 🥰🎉</h1>
+        <h2>It’s the best decision ever 💖</h2>
+        <img src="hug.gif" width="260">
+        <br><br>
+        <button onclick="stopBgAudio(); nextPage()">Next →</button>
+    </div>
+</div>
+
+<!-- 🥹 PAGE 8 -->
+<div class="page">
+    <div class="content">
+        <h2>Just a Little Recall 🥹</h2>
+        <p>Some moments are forever…</p>
+        <p><a href="memories/memory1.pdf" target="_blank">Memory One 💌</a></p>
+        <p><a href="memories/memory2.pdf" target="_blank">Memory Two 💞</a></p>
+        <button onclick="nextPage()">Next →</button>
+    </div>
+</div>
+
+<!-- 🎁 PAGE 9 -->
+<div class="page">
+    <div class="content">
+        <h2>Small Gifts for You 🎁</h2>
+        <p>Tap a story to play 💖</p>
+
+        <div class="audio-list" id="audioList"></div>
+
+        <div class="audio-player" id="audioPlayer">
+            <p id="trackName">Select a story 🎵</p>
+            <audio id="audio" controls></audio>
+
+            <div class="controls">
+                <button onclick="prevTrack()">⏮</button>
+                <button onclick="togglePlay()">▶️ / ⏸</button>
+                <button onclick="nextTrack()">⏭</button>
+                <button onclick="toggleAutoPlay()" id="autoBtn">🔁 Auto OFF</button>
+            </div>
+        </div>
+
+        <h3>Forever yours ❤️</h3>
+    </div>
+</div>
+
+<script>
+
+/* ---------- PAGE NAV ---------- */
+let currentPage = 0;
+const pages = document.querySelectorAll(".page");
+
+function showPage(i) {
+    pages[currentPage].classList.remove("active");
+    currentPage = i;
+    pages[currentPage].classList.add("active");
+}
+
+function nextPage() {
+    if (currentPage < pages.length - 1) {
+        showPage(currentPage + 1);
+    }
+}
+
+/* ---------- BG AUDIO ---------- */
+const bgAudio = document.getElementById("bgAudio");
+
+function playBgAudio(file) {
+    bgAudio.pause();
+    bgAudio.currentTime = 0;
+    bgAudio.src = file;
+    bgAudio.loop = false;
+    bgAudio.play().catch(() => {});
+}
+
+function stopBgAudio() {
+    bgAudio.pause();
+    bgAudio.currentTime = 0;
+}
+
+/* ---------- PAGE FLOW ---------- */
+function nextFromPage1() { showPage(1); playBgAudio("bgaudios/firstpage.mp3"); }
+function nextFromPage2() { showPage(2); playBgAudio("bgaudios/memories.mp3"); }
+function yesClicked() { showPage(6); }
+
+/* ✅ NEW FUNCTIONS (ONLY ADDITION) */
+
+function nextFromReasons() {
+    playBgAudio("bgaudios/secretbox.mp3");
+    nextPage();
+}
+
+function nextFromSecret() {
+    playBgAudio("bgaudios/willyoubemyvalentine.mp3");
+    nextPage();
+}
+
+/* ---------- REST OF YOUR ORIGINAL CODE BELOW (UNCHANGED) ---------- */
+
+/* ---------- REASON ---------- */
+function showReason() {
+    document.getElementById("reasonText").innerText =
+        "I don’t need a reason to love you — loving you itself is the reason ❤️";
+}
+
+/* ---------- SECRET SECTION ---------- */
+let lastTap = 0;
+
+document.getElementById("secretBox").addEventListener("click", function () {
+    const now = new Date().getTime();
+    if (now - lastTap < 300) {
+        showSecretQuestion();
+    }
+    lastTap = now;
+});
+
+function showSecretQuestion() {
+    const area = document.getElementById("secretArea");
+    area.innerHTML = `
+        <p><b>Which colour shirt did you buy me first?</b></p>
+        <input type="text" id="secretInput" placeholder="Type your answer..." style="padding:8px; border-radius:10px;">
+        <br><br>
+        <button onclick="checkSecretAnswer()">Submit</button>
+        <p id="secretMessage" style="margin-top:10px;"></p>
+    `;
+}
+
+function checkSecretAnswer() {
+    const input = document.getElementById("secretInput").value.trim();
+    const msg = document.getElementById("secretMessage");
+
+    if (input.toLowerCase().includes("yellow")) {
+        msg.innerHTML = `
+            <h3>Yahhh 💛 It's correct!</h3>
+            <img src="photos/yellow_shirt.jpg" width="220" style="margin:10px; border-radius:15px;">
+            <br>
+            <button onclick="showSecretMedia()">See the secret pics 👀</button>
+        `;
+    } else {
+        msg.innerHTML = "Wrong answer 😏 Try again.";
+        document.getElementById("secretInput").value = "";
+    }
+}
+
+function showSecretMedia() {
+    const msg = document.getElementById("secretMessage");
+    msg.innerHTML += `
+        <br><br>
+        <img src="photos/photo_s1.jpg" width="220" style="margin:10px; border-radius:15px;">
+        <img src="photos/photo_s2.jpg" width="220" style="margin:10px; border-radius:15px;">
+        <br>
+        <video src="photos/video_s1.mp4" width="320" controls style="margin-top:15px; border-radius:15px;"></video>
+    `;
+}
+
+/* ---------- NO BUTTON ---------- */
+const noTexts = [
+"NO 😏","Please no 😢","Don’t do this to me 🥺",
+"This could be a mistake 😭","Think again 😳",
+"Wrong button 😌","Try YES 👀","You know you want to 😏"
+];
+
+let noIndex = 0;
+let noSoundPlayed = false;
+
+function moveNo() {
+    if (!noSoundPlayed) {
+        playBgAudio("bgaudios/no.mp3");
+        noSoundPlayed = true;
+    }
+    const btn = document.getElementById("noBtn");
+    btn.style.position = "absolute";
+    btn.style.left = Math.random() * 260 + "px";
+    btn.style.top = Math.random() * 120 + "px";
+    btn.innerText = noTexts[noIndex];
+    noIndex = (noIndex + 1) % noTexts.length;
+}
+
+function goToGifts() {
+    stopBgAudio();
+    showPage(pages.length - 1);
+}
+
+/* ---------- LOAD GALLERY ---------- */
+const gallery = document.getElementById("gallery");
+let totalPhotos = 66;
+
+for (let i = 1; i <= totalPhotos; i++) {
+    const img = document.createElement("img");
+    img.src = `photos/photo${i}.jpeg`;
+    img.onerror = function () {
+        this.onerror = null;
+        this.src = `photos/photo${i}.jpg`;
+    };
+    img.loading = "lazy";
+    gallery.appendChild(img);
+}
+
+gallery.addEventListener("click", function(e) {
+    if (e.target.tagName === "IMG") {
+        document.querySelectorAll(".gallery img")
+            .forEach(img => {
+                if (img !== e.target) img.classList.remove("zoomed");
+            });
+        e.target.classList.toggle("zoomed");
+    }
+});
+
+/* ---------- AUDIO SECTION (UNCHANGED) ---------- */
+const tracks = [
+    { name: "Paambu-Kadhai", file: "audio/paambu-kadhai.mp3" },
+    { name: "Aanathai-kadhai", file: "audio/aanathai-kadhai.mp3" },
+    { name: "Pattanam-poitu-vara-mulla", file: "audio/pattanam-poitu-vara-mulla.mp3" },
+    { name: "Eathu azhagu", file: "audio/eathu azhagu.mp3" },
+    { name: "Colors Story", file: "audio/colors story.mp3" },
+    { name: "Kulla Nari and Aadu", file: "audio/kulla nari and aadu(7).mp3" },
+    { name: "Sundu Sindu", file: "audio/sundu sindu (5).mp3" },
+    { name: "Minmini Poochi", file: "audio/minmini poochi(4).mp3" },
+    { name: "Competition", file: "audio/competition (3).mp3" },
+    { name: "Singa Raaja Roams at Night", file: "audio/singa raaja roams at night.mp3" },
+    { name: "Kaaka Vadai Kadhai", file: "audio/kaaka vadai kadhai.mp3" },
+    { name: "Kurangum Kullavum", file: "audio/kurangum kullavum.mp3" },
+    { name: "Singam Eali Kadhai", file: "audio/singam eali kadhai.mp3" }
+];
+
+const audio = document.getElementById("audio");
+const trackName = document.getElementById("trackName");
+const audioList = document.getElementById("audioList");
+const autoBtn = document.getElementById("autoBtn");
+
+let currentTrack = 0;
+let autoPlayEnabled = false;
+
+tracks.forEach((track, index) => {
+    const item = document.createElement("div");
+    item.className = "audio-item";
+    item.innerText = "🎧 " + track.name;
+    item.onclick = () => playTrack(index);
+    audioList.appendChild(item);
+});
+
+function playTrack(index) {
+    currentTrack = index;
+    audio.src = tracks[index].file;
+    trackName.innerText = "Now Playing: " + tracks[index].name;
+    audio.play().catch(() => {});
+}
+
+function togglePlay() {
+    if (!audio.src) return;
+    audio.paused ? audio.play() : audio.pause();
+}
+
+function nextTrack() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    playTrack(currentTrack);
+}
+
+function prevTrack() {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    playTrack(currentTrack);
+}
+
+function toggleAutoPlay() {
+    autoPlayEnabled = !autoPlayEnabled;
+    if (autoPlayEnabled) {
+        autoBtn.classList.add("active");
+        autoBtn.innerText = "🔁 Auto ON";
+    } else {
+        autoBtn.classList.remove("active");
+        autoBtn.innerText = "🔁 Auto OFF";
+    }
+}
+
+audio.addEventListener("ended", function () {
+    if (autoPlayEnabled) nextTrack();
+});
+
+</script>
+
+</body>
+</html>
